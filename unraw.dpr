@@ -73,11 +73,11 @@ begin
 
   inFS:=TFileStream.Create(inFileName, fmOpenRead or fmShareDenyWrite);
 
-  inFS.Seek($18, soFromBeginning);
+  inFS.Position:=$18;
   inFS.Read(Count, SizeOf(Count)); // files count
   WriteLn('Count: ' + IntToStr(Count));
 
-  inFS.Seek($30, soFromBeginning); // table offset
+  inFS.Position:=$30; // table offset
   Offset:=$2800; // files offset
 
   for i:=1 to Count do begin
@@ -108,11 +108,11 @@ begin
 
   inFS:=TFileStream.Create(inFileName, fmOpenRead or fmShareDenyWrite);
 
-  inFS.Seek($40, soFromBeginning);
+  inFS.Position:=$40;
   inFS.Read(Count, SizeOf(Count)); // files count
   WriteLn('Count: ' + IntToStr(Count));
 
-  inFS.Seek($400, soFromBeginning); // table offset
+  inFS.Position:=$400; // table offset
 
   for i:=1 to Count do begin
     FillChar(MyEntry, SizeOf(MyEntry), $00);

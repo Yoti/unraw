@@ -150,7 +150,7 @@ var
 begin
   TempOffset:=Stream.Position;
 
-  Stream.Seek(Offset, soFromBeginning);
+  Stream.Position:=Offset;
   OutputFile:=TFileStream.Create(FileName, fmCreate or fmOpenWrite or fmShareExclusive);
   TempStream:=TMemoryStream.Create;
   TempStream.CopyFrom(Stream, Size);
@@ -161,7 +161,7 @@ begin
   TempStream.Free;
   OutputFile.Free;
 
-  Stream.Seek(TempOffset, soFromBeginning);
+  Stream.Position:=TempOffset;
 end;
 function SaveStreamToFileUnZL(const Stream: TFileStream; const FileName: String; const Offset, Size: Int64): Int64;
 var
@@ -172,7 +172,7 @@ var
 begin
   TempOffset:=Stream.Position;
 
-  Stream.Seek(Offset, soFromBeginning);
+  Stream.Position:=Offset;
   OutputFile:=TFileStream.Create(FileName, fmCreate or fmOpenWrite or fmShareExclusive);
   TempStream:=TMemoryStream.Create;
   TempStream.CopyFrom(Stream, Size);
@@ -183,7 +183,7 @@ begin
   TempStream.Free;
   OutputFile.Free;
 
-  Stream.Seek(TempOffset, soFromBeginning);
+  Stream.Position:=TempOffset;
 end;
 
 procedure WriteStringToFile(const FileName, TextString: String);
