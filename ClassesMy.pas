@@ -1,6 +1,6 @@
 {
     unraw - Asus RAW firmware unpacker
-    Copyright (C) 2020  Yoti
+    Copyright (C) 2021  Yoti
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,11 +36,11 @@ function ExtractFileNameNoExt(const FileName: String): String; Overload;
 function GetFileSizeBytes(const FileName: String): Int64; Overload;
 function GetFileSizeViaFS(const FileName: String): Int64; Overload;
 
-procedure SaveStreamToFile(const Stream: TMemoryStream; const FileName: String; const Offset, Size: Cardinal); Overload;
-procedure SaveStreamToFile(const Stream: TFileStream; const FileName: String; const Offset, Size: Cardinal); Overload;
+procedure SaveStreamToFile(const Stream: TMemoryStream; const FileName: String; const Offset, Size: Int64); Overload;
+procedure SaveStreamToFile(const Stream: TFileStream; const FileName: String; const Offset, Size: Int64); Overload;
 
-function SaveStreamToFileUnZL(const Stream: TMemoryStream; const FileName: String; const Offset, Size: Cardinal): Int64; Overload;
-function SaveStreamToFileUnZL(const Stream: TFileStream; const FileName: String; const Offset, Size: Cardinal): Int64; Overload;
+function SaveStreamToFileUnZL(const Stream: TMemoryStream; const FileName: String; const Offset, Size: Int64): Int64; Overload;
+function SaveStreamToFileUnZL(const Stream: TFileStream; const FileName: String; const Offset, Size: Int64): Int64; Overload;
 
 procedure WriteStringToFile(const FileName, TextString: String);
 function ReadStringFromFile(const FileName: String): String;
@@ -116,34 +116,34 @@ begin
   InputFile.Free;
 end;
 
-procedure SaveStreamToFile(const Stream: TMemoryStream; const FileName: String; const Offset, Size: Cardinal);
+procedure SaveStreamToFile(const Stream: TMemoryStream; const FileName: String; const Offset, Size: Int64);
 var
-  TempOffset: Cardinal;
+  TempOffset: Int64;
   OutputFile: TFileStream;
 begin
   OutputFile:=TFileStream.Create(FileName, fmCreate or fmOpenWrite or fmShareExclusive);
   TempOffset:=Stream.Position;
-  Stream.Seek(Offset, soFromBeginning);
+  Stream.Position:=Offset;
   OutputFile.CopyFrom(Stream, Size);
-  Stream.Seek(TempOffset, soFromBeginning);
+  Stream.Position:=TempOffset;
   OutputFile.Free;
 end;
-procedure SaveStreamToFile(const Stream: TFileStream; const FileName: String; const Offset, Size: Cardinal);
+procedure SaveStreamToFile(const Stream: TFileStream; const FileName: String; const Offset, Size: Int64);
 var
-  TempOffset: Cardinal;
+  TempOffset: Int64;
   OutputFile: TFileStream;
 begin
   OutputFile:=TFileStream.Create(FileName, fmCreate or fmOpenWrite or fmShareExclusive);
   TempOffset:=Stream.Position;
-  Stream.Seek(Offset, soFromBeginning);
+  Stream.Position:=Offset;
   OutputFile.CopyFrom(Stream, Size);
-  Stream.Seek(TempOffset, soFromBeginning);
+  Stream.Position:=TempOffset;
   OutputFile.Free;
 end;
 
-function SaveStreamToFileUnZL(const Stream: TMemoryStream; const FileName: String; const Offset, Size: Cardinal): Int64;
+function SaveStreamToFileUnZL(const Stream: TMemoryStream; const FileName: String; const Offset, Size: Int64): Int64;
 var
-  TempOffset: Cardinal;
+  TempOffset: Int64;
   TempStream: TMemoryStream;
   UnZLStream: TZDecompressionStream;
   OutputFile: TFileStream;
@@ -163,9 +163,9 @@ begin
 
   Stream.Seek(TempOffset, soFromBeginning);
 end;
-function SaveStreamToFileUnZL(const Stream: TFileStream; const FileName: String; const Offset, Size: Cardinal): Int64;
+function SaveStreamToFileUnZL(const Stream: TFileStream; const FileName: String; const Offset, Size: Int64): Int64;
 var
-  TempOffset: Cardinal;
+  TempOffset: Int64;
   TempStream: TMemoryStream;
   UnZLStream: TZDecompressionStream;
   OutputFile: TFileStream;

@@ -1,6 +1,6 @@
 {
     unraw - Asus RAW firmware unpacker
-    Copyright (C) 2020  Yoti
+    Copyright (C) 2021  Yoti
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -124,10 +124,10 @@ begin
     end; // else v2_64
 
     TempOffset:=inFS.Position;
-    inFS.Seek(MyEntry.Offset, soFromBeginning);
+    inFS.Position:=MyEntry.Offset;
     FillChar(MyEntry_2, SizeOf(MyEntry_2), $00);
     inFS.Read(MyEntry_2, SizeOf(MyEntry_2));
-    inFS.Seek(TempOffset, soFromBeginning);
+    inFS.Position:=TempOffset;
 
     WriteLn(MyEntry.Name + ' (' + IntToStr(MyEntry.Size) + ')');
     SaveStreamToFile(inFS, outDirName + String(MyEntry.Name), MyEntry.Offset + SizeOf(MyEntry_2), MyEntry.Size);
